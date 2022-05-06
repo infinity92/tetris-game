@@ -20,6 +20,11 @@ class TetrisViewModel: ObservableObject {
     
     @Published var model = GameModel(38, 20) { gameField, size in
         Figure(TemplatesOfFigure.allCases.randomElement()!, position: ( Int(size.columns/2), size.rows - 5), field: gameField)
+    } _ : { size in
+        var gameField = GameField(by: size)
+        var figure = Figure(.q, position: (0-1, 0-1), field: gameField)
+        figure.put(to: &gameField)
+        return gameField
     }
     
     var timer: Timer?
@@ -30,19 +35,17 @@ class TetrisViewModel: ObservableObject {
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: speed, repeats: true) {timer in
             self.model.move()
-            self.updateScreen()
+            self.model.update()
         }
     }
     
     func updateScreen() {
-        self.model.clearMap()
-        self.model.gameField.put(to: &self.model.screen)
-        self.model.figure.put(to: &self.model.screen)
+        self.model.update()
     }
     
     func rotate() {
         self.model.figure.rotate()
-        updateScreen()
+        self.model.update()
     }
     
     func getMoveGesture() -> some Gesture {
@@ -74,7 +77,7 @@ class TetrisViewModel: ObservableObject {
         }
         if yDiff < -5 {
         }
-        updateScreen()
+        self.model.update()
     }
     
     func onMoveEnded(_:DragGesture.Value) {

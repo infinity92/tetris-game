@@ -11,7 +11,7 @@ import Foundation
 
 struct Figure {
     var position: (x:Int, y:Int)
-    var area: FigureArea
+    var area: Area
     var coord: [Int: (xx: Int, yy: Int)] = [:]
     var coordCnt = 0
     var gameField: GameField
@@ -37,17 +37,19 @@ struct Figure {
     
     init(_ template: TemplatesOfFigure, position: (x:Int, y:Int), field: GameField) {
         self.position = position
-        area = FigureArea(template: template.rawValue)
+        area = Area(template: template.rawValue)
         gameField = field
     }
     
-    func put(to screen: inout GameModel.BlockContainer) {
+    mutating func put(to screen: inout GameModel.BlockContainer) {
+        calcCoord()
         for i in 0..<coordCnt {
             screen[coord[i]!.yy][coord[i]!.xx] = .fill
         }
     }
     
-    func put(to gameField: inout GameField) {
+    mutating func put(to gameField: inout GameField) {
+        calcCoord()
         for i in 0..<coordCnt {
             gameField.container[coord[i]!.yy][coord[i]!.xx] = .fill
         }
@@ -100,12 +102,12 @@ struct Figure {
         return nil
     }
     
-    mutating func calcCoord() {
+    private mutating func calcCoord() {
         var xx = 0, yy = 0
         coordCnt = 0
         for i in 0..<area.width {
             for j in 0..<area.height {
-                if area.area[j][i] == "*" {
+                if area.container[j][i] == "*" {
                     switch turn {
                     case 1:
                         xx = position.x + (area.height - j - 1)
@@ -128,10 +130,10 @@ struct Figure {
 }
 
 extension Figure {
-    struct FigureArea {
+    struct Area {
         let width: Int = 4
         let height: Int = 4
-        var area: [[String]] = []
+        var container: [[String]] = []
         
         init(template: String) {
             var j = 0
@@ -140,7 +142,7 @@ extension Figure {
                 tmp.append(String(c))
                 j += 1
                 if j == width {
-                    area.append(tmp)
+                    container.append(tmp)
                     tmp = []
                     j = 0
                 }

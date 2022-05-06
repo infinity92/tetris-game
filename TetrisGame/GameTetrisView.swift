@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct GameTetrisView: View {
     
     @ObservedObject var game: TetrisViewModel
     
@@ -51,12 +51,12 @@ struct ContentView: View {
     }
     
     func getBlockStyle(x: Int, y: Int) -> Color {
-        return game.model.screen[y][x] != .fill && game.model.gameField.container[y][x] != .fill ? Color.gray : Color.blue
+        return game.model.screen[y][x] != .fill && game.model.field.container[y][x] != .fill ? Color.gray : Color.blue
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(game: TetrisViewModel())
+        GameTetrisView(game: TetrisViewModel())
     }
 }
