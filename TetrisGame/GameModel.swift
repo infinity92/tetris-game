@@ -14,9 +14,8 @@ struct GameModel {
     var figure: Figure
     var screen: BlockContainer
     var field: GameField
-    
     var figureFactory: (GameField, (columns:Int, rows:Int)) -> Figure
-    
+    var endGameAction: (() -> Void)?
     
     
     init(_ rows: Int,
@@ -41,6 +40,9 @@ struct GameModel {
             figure = self.figureFactory(field, size)
             if figure.checkCollision() != nil {
                 field.clear()
+                if let endGame = endGameAction {
+                    endGame()
+                }
             }
         }
         field.burning()

@@ -29,9 +29,7 @@ struct GameTetrisView: View {
                     .fill(getBlockStyle(x: j, y: i))
                 }
             }
-            .onTapGesture {
-                game.rotate()
-            }
+            .onTapGesture(perform: game.rotate)
             .gesture(game.getMoveGesture())
         }
         

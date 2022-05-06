@@ -17,18 +17,10 @@ class TetrisViewModel: ObservableObject {
         model.size.rows
     }
     var lastMoveLocation: CGPoint?
-    
-    @Published var model = GameModel(38, 20) { gameField, size in
-        Figure(TemplatesOfFigure.allCases.randomElement()!, position: ( Int(size.columns/2), size.rows - 5), field: gameField)
-    } _ : { size in
-        var gameField = GameField(by: size)
-        var figure = Figure(.q, position: (0-1, 0-1), field: gameField)
-        figure.put(to: &gameField)
-        return gameField
-    }
-    
     var timer: Timer?
     var speed: Double
+    
+    @Published var model = TetrisViewModel.start()
     
     init() {
         speed = 0.5
@@ -37,6 +29,27 @@ class TetrisViewModel: ObservableObject {
             self.model.move()
             self.model.update()
         }
+    }
+    
+    static func start() -> GameModel {
+        GameModel(38, 20, TetrisViewModel.makeFigure, TetrisViewModel.makeGameField)
+        
+    }
+    
+    static func makeFigure(on gameField: GameField, and size: (columns:Int, rows:Int)) -> Figure {
+        return Figure(TemplatesOfFigure.allCases.randomElement()!, position: ( Int(size.columns/2), size.rows - 5), field: gameField)
+    }
+    
+    static func makeGameField(by size: (columns:Int, rows:Int)) -> GameField {
+        var gameField = GameField(by: size)
+        var figure = Figure(.q, position: (0-1, 0-1), field: gameField)
+        figure.put(to: &gameField)
+        return gameField
+    }
+    
+    func endGame() {
+        timer?.invalidate()
+        print("The End")
     }
     
     func updateScreen() {
