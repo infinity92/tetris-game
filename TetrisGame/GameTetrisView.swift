@@ -31,14 +31,17 @@ struct GameTetrisView: View {
                 let yoffset = culcOffsetY(height: proxy.size.height, length: l, row: game.rows)
                 ForEach (0..<game.rows, id:\.self) { i in
                     ForEach (0..<game.columns, id:\.self) { j in
-                        Path { path in
+                        let path = Path { path in
                                 let x = xoffset + l * CGFloat(j)
                                 let y = proxy.size.height - yoffset - l * CGFloat(i+1)
                                 
                                 let rect = CGRect(x: x, y: y, width: l, height: l)
                                 path.addRect(rect)
                         }
-                        .fill(getBlockStyle(x: j, y: i))
+                        path
+                            .fill(getBlockStyle(x: j, y: i))
+                            .overlay(path.stroke(getBorderStyle(x: j, y: i), lineWidth: 1))
+                        
                     }
                 }
                 .onTapGesture(perform: game.rotate)
@@ -61,12 +64,26 @@ struct GameTetrisView: View {
     }
     
     func getBlockStyle(x: Int, y: Int) -> Color {
-        if game.model.screen[y][x] == .fill || game.model.field.container[y][x] == .fill {
-            return .blue
+        if game.model.field.container[y][x] == .fill {
+            return Color(UIColor(named: "Field")!)
+        } else if game.model.screen[y][x] == .fill {
+            return Color(UIColor(named: "L")!)
         } else if game.model.screen[y][x] == .shadow{
-            return .red
+            return Color(UIColor(named: "Shadow")!)
         } else {
-            return .gray
+            return Color(UIColor(named: "Background")!)
+        }
+    }
+    
+    func getBorderStyle(x: Int, y: Int) -> Color {
+        if game.model.field.container[y][x] == .fill {
+            return Color(UIColor(named: "Field Border")!)
+        } else if game.model.screen[y][x] == .fill {
+            return Color(UIColor(named: "L Border")!)
+        } else if game.model.screen[y][x] == .shadow{
+            return Color(UIColor(named: "Shadow Border")!)
+        } else {
+            return .clear
         }
     }
 }

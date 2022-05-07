@@ -10,6 +10,7 @@ import Foundation
 
 
 struct Figure {
+    let type: TemplatesOfFigure
     var position: (x:Int, y:Int)
     var area: Area
     var coord: [Int: (xx: Int, yy: Int)] = [:]
@@ -38,6 +39,7 @@ struct Figure {
     
     init(_ template: TemplatesOfFigure, position: (x:Int, y:Int), field: GameField) {
         self.position = position
+        type = template
         area = Area(template: template.rawValue)
         gameField = field
     }
