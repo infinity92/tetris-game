@@ -13,6 +13,7 @@ struct Figure {
     var position: (x:Int, y:Int)
     var area: Area
     var coord: [Int: (xx: Int, yy: Int)] = [:]
+    var downCoord: [Int: (xx: Int, yy: Int)] = [:]
     var coordCnt = 0
     var gameField: GameField
     var turn: Int = 0 {
@@ -44,6 +45,7 @@ struct Figure {
     mutating func put(to screen: inout GameModel.BlockContainer) {
         calcCoord()
         for i in 0..<coordCnt {
+            screen[downCoord[i]!.yy][downCoord[i]!.xx] = .shadow
             screen[coord[i]!.yy][coord[i]!.xx] = .fill
         }
     }
@@ -71,11 +73,35 @@ struct Figure {
     mutating func moveLeft() -> Bool {
         return move(dx: -1, dy: 0)
     }
+    
     mutating func moveRight() -> Bool {
         return move(dx: 1, dy: 0)
     }
+    
     mutating func moveDown() -> Bool {
         return move(dx: 0, dy: -1)
+    }
+    
+    mutating func fastMoveDown() {
+        coord = downCoord
+    }
+    
+    private mutating func calcDownCoord() {
+        var dy = 0
+        var isCollision = false
+        while !isCollision {
+            dy += 1
+            for i in 0..<coordCnt {
+                let y = coord[i]!.yy-dy
+                let x = coord[i]!.xx < 0 ? 0 : (coord[i]!.xx >= gameField.size.columns ? gameField.size.columns - 1 : coord[i]!.xx)
+                
+                if y < 0 || gameField.container[y][x] == .fill {
+                    isCollision = true
+                }
+                downCoord[i] = (xx: coord[i]!.xx, yy: y+1)
+            }
+            
+        }
     }
     
     mutating func rotate() {
@@ -126,6 +152,7 @@ struct Figure {
                 }
             }
         }
+        calcDownCoord()
     }
 }
 

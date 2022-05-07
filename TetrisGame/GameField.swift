@@ -10,6 +10,7 @@ import Foundation
 struct GameField {
     var container: GameModel.BlockContainer
     let size: (columns: Int, rows: Int)
+    var onBurningLineEvent: ((Int) -> Void)?
     
     init(by size: (columns:Int, rows: Int)) {
         self.size = size
@@ -39,6 +40,9 @@ struct GameField {
             if fillLine {
                 for y in j..<size.rows-1 {
                     container[y] = container[y+1]
+                }
+                if let burningLineEvent = onBurningLineEvent {
+                    burningLineEvent(j)
                 }
                 return
             }

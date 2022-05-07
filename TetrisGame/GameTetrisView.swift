@@ -13,26 +13,38 @@ struct GameTetrisView: View {
     
     var body: some View {
         
-        GeometryReader { proxy in
-            let l = culcBlockLength(size: proxy.size, column: game.columns, row: game.rows)
-            let xoffset = culcOffsetX(width: proxy.size.width, length: l, column: game.columns)
-            let yoffset = culcOffsetY(height: proxy.size.height, length: l, row: game.rows)
-            ForEach (0..<game.rows, id:\.self) { i in
-                ForEach (0..<game.columns, id:\.self) { j in
-                    Path { path in
-                            let x = xoffset + l * CGFloat(j)
-                            let y = proxy.size.height - yoffset - l * CGFloat(i+1)
-                            
-                            let rect = CGRect(x: x, y: y, width: l, height: l)
-                            path.addRect(rect)
-                    }
-                    .fill(getBlockStyle(x: j, y: i))
+        VStack {
+            HStack {
+                Text("\(game.score.points)")
+                Button {
+                    game.isPause.toggle()
+                    print(game.isPause)
+                } label: {
+                    game.isPause ? Text("Play") : Text("Pause")
                 }
+
             }
-            .onTapGesture(perform: game.rotate)
-            .gesture(game.getMoveGesture())
+            
+            GeometryReader { proxy in
+                let l = culcBlockLength(size: proxy.size, column: game.columns, row: game.rows)
+                let xoffset = culcOffsetX(width: proxy.size.width, length: l, column: game.columns)
+                let yoffset = culcOffsetY(height: proxy.size.height, length: l, row: game.rows)
+                ForEach (0..<game.rows, id:\.self) { i in
+                    ForEach (0..<game.columns, id:\.self) { j in
+                        Path { path in
+                                let x = xoffset + l * CGFloat(j)
+                                let y = proxy.size.height - yoffset - l * CGFloat(i+1)
+                                
+                                let rect = CGRect(x: x, y: y, width: l, height: l)
+                                path.addRect(rect)
+                        }
+                        .fill(getBlockStyle(x: j, y: i))
+                    }
+                }
+                .onTapGesture(perform: game.rotate)
+                .gesture(game.getMoveGesture())
+            }
         }
-        
     }
     
     
@@ -49,7 +61,13 @@ struct GameTetrisView: View {
     }
     
     func getBlockStyle(x: Int, y: Int) -> Color {
-        return game.model.screen[y][x] != .fill && game.model.field.container[y][x] != .fill ? Color.gray : Color.blue
+        if game.model.screen[y][x] == .fill || game.model.field.container[y][x] == .fill {
+            return .blue
+        } else if game.model.screen[y][x] == .shadow{
+            return .red
+        } else {
+            return .gray
+        }
     }
 }
 

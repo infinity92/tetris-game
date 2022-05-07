@@ -14,9 +14,17 @@ struct GameModel {
     var figure: Figure
     var screen: BlockContainer
     var field: GameField
-    var figureFactory: (GameField, (columns:Int, rows:Int)) -> Figure
-    var endGameAction: (() -> Void)?
-    
+    var makeFigure: (GameField, (columns:Int, rows:Int)) -> Figure
+    var onFinishGameEvent: (() -> Void)?
+    var onFigureFinishMoveDownEvent: ((Figure)->Void)?
+    var onBurningLineEvent: ((Int) -> Void)? {
+        get {
+            field.onBurningLineEvent
+        }
+        set {
+            field.onBurningLineEvent = newValue
+        }
+    }
     
     init(_ rows: Int,
          _ columns: Int,
@@ -25,9 +33,8 @@ struct GameModel {
         size = (columns: columns, rows: rows)
         screen = Array(repeating: Array(repeating: .empty, count: size.columns), count: size.rows)
         field = fieldFactory(size)
-        self.figureFactory = figureFactory
-        figure = self.figureFactory(field, size)
-        
+        self.makeFigure = figureFactory
+        figure = self.makeFigure(field, size)
     }
     
     mutating func clearMap() {
@@ -37,10 +44,13 @@ struct GameModel {
     mutating func move() {
         if !figure.moveDown() {
             figure.put(to: &field)
-            figure = self.figureFactory(field, size)
+            if let finishMoveDownEvent = onFigureFinishMoveDownEvent {
+                finishMoveDownEvent(figure)
+            }
+            figure = self.makeFigure(field, size)
             if figure.checkCollision() != nil {
                 field.clear()
-                if let endGame = endGameAction {
+                if let endGame = onFinishGameEvent {
                     endGame()
                 }
             }
@@ -56,5 +66,7 @@ struct GameModel {
 }
 
 enum BlockState {
-    case empty, fill
+    case empty, fill, shadow
 }
+
+
