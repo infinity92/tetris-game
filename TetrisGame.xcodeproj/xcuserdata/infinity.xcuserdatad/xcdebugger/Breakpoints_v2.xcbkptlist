@@ -30,8 +30,8 @@
             filePath = "TetrisGame/Figure.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
+            startingLineNumber = "93"
+            endingLineNumber = "93"
             landmarkName = "calcDownCoord()"
             landmarkType = "7">
          </BreakpointContent>
@@ -46,8 +46,8 @@
             filePath = "TetrisGame/Figure.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "99"
-            endingLineNumber = "99"
+            startingLineNumber = "102"
+            endingLineNumber = "102"
             landmarkName = "calcDownCoord()"
             landmarkType = "7">
          </BreakpointContent>

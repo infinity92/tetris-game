@@ -54,36 +54,7 @@ class TetrisViewModel: ObservableObject {
     }
     
     static func makeGameField(by size: (columns:Int, rows:Int)) -> GameField {
-        var gameField = GameField(by: size)
-        
-        /*var figure = Figure(.q, position: (0-1, 0-1), field: gameField)
-        figure.put(to: &gameField)
-        
-        figure = Figure(.q, position: (0-1+2, 0-1), field: gameField)
-        figure.put(to: &gameField)
-        
-        figure = Figure(.q, position: (0-1+4, 0-1), field: gameField)
-        figure.put(to: &gameField)
-        
-        figure = Figure(.q, position: (0-1+6, 0-1), field: gameField)
-        figure.put(to: &gameField)
-        
-        figure = Figure(.q, position: (0-1+8, 0-1), field: gameField)
-        figure.put(to: &gameField)
-        
-        figure = Figure(.q, position: (0-1+10, 0-1), field: gameField)
-        figure.put(to: &gameField)
-        
-        figure = Figure(.q, position: (0-1+12, 0-1), field: gameField)
-        figure.put(to: &gameField)
-        
-        figure = Figure(.q, position: (0-1+14, 0-1), field: gameField)
-        figure.put(to: &gameField)
-        
-        figure = Figure(.q, position: (0-1+16, 0-1), field: gameField)
-        figure.put(to: &gameField)*/
-        
-        return gameField
+        return GameField(by: size)
     }
     
     func onEndGame() {

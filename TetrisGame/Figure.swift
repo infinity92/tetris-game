@@ -83,7 +83,10 @@ struct Figure {
     }
     
     mutating func fastMoveDown() {
-        coord = downCoord
+        var dy = -1
+        while move(dx: 0, dy: dy) {
+            dy -= 1
+        }
     }
     
     private mutating func calcDownCoord() {
