@@ -27,8 +27,10 @@ struct StatusBarView: View {
             Text("Next")
                 .padding(.top, 10)
             ZStack {
-                Rectangle().fill(.gray).opacity(0.4)
-                    .frame(width: 60, height: 70)
+                Rectangle()
+                    .fill(.gray)
+                    .opacity(0.4)
+                    .frame(width: 70, height: 70)
                 NextFigureBarView(figure: $game.model.figure)
                     .frame(width: 50, height: 50)
             }

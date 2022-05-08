@@ -48,6 +48,8 @@ struct Figure {
         calcCoord()
         for i in 0..<coordCnt {
             screen[downCoord[i]!.yy][downCoord[i]!.xx] = .shadow
+        }
+        for i in 0..<coordCnt {
             screen[coord[i]!.yy][coord[i]!.xx] = .fill
         }
     }
