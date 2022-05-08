@@ -17,15 +17,24 @@ struct GameTetrisView: View {
             Spacer()
             VStack {
                 Spacer()
-                Text("TETRIS").fontWeight(.bold).foregroundColor(.gray)
+                Text("TETRIS")
+                    .fontWeight(.bold)
+                    .foregroundColor(.gray)
                 ZStack {
-                    Rectangle().fill(.gray).frame(width: 330, height: 414)
+                    Rectangle().fill(.gray).frame(width: 330, height: 425)
                     HStack {
-                        GameView()
-                            .frame(width: 200, height: 400)
-                            .padding(0)
-                        Rectangle().fill(.black).frame(width: 1, height: 400)
-                            .padding(0)
+                        if game.isMenu {
+                            Menu()
+                                .frame(width: 200, height: 400)
+                                .padding(0)
+                        } else {
+                            GameView()
+                                .frame(width: 200, height: 400)
+                                .padding(0)
+                        }
+                        Rectangle()
+                            .fill(.black)
+                            .frame(width: 1, height: 400)
                         StatusBarView()
                             .frame(width: 100, height: 400)
                     }
@@ -35,6 +44,7 @@ struct GameTetrisView: View {
                 ControlPanelView()
                     .frame(width: 200, height: 100)
                     .padding(.top, 50)
+                
                 Spacer()
             }
             Spacer()

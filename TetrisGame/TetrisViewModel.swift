@@ -22,13 +22,22 @@ class TetrisViewModel: ObservableObject {
     @Published var isPause: Bool = false {
         didSet {
             if isPause {
+                
                 timer?.invalidate()
             } else {
                 play()
             }
+            isMenu = isPause
         }
     }
-    
+    @Published var isStarted: Bool {
+        didSet {
+            if !isStarted {
+                isMenu = true
+            }
+        }
+    }
+    @Published var isMenu = true
     @Published var score: Score = Score()
     @Published var model: GameModel
     @Published var level: Int = 1
@@ -36,14 +45,34 @@ class TetrisViewModel: ObservableObject {
     init() {
         self.model = GameModel(20, 10, TetrisViewModel.makeFigure, TetrisViewModel.makeGameField)
         speed = 0.9
-        play()
+        isStarted = false
         self.model.onFinishGameEvent = onEndGame
         self.model.onFigureFinishMoveDownEvent = onFinishMoveDownEvent
         self.model.onBurningLineEvent = onBurningLineEvent
+        
+        
     }
     
     static func makeFigure(on gameField: GameField, and size: (columns:Int, rows:Int)) -> Figure {
         return Figure(TemplatesOfFigure.allCases.randomElement()!, position: ( Int(size.columns/2), size.rows - 5), field: gameField)
+    }
+    
+    func newGame() {
+//        model.field.clear()
+//        model.clearMap()
+//        score.reset()
+//        play()
+        
+        self.model = GameModel(20, 10, TetrisViewModel.makeFigure, TetrisViewModel.makeGameField)
+        speed = 0.9
+        isStarted = true
+        self.model.onFinishGameEvent = onEndGame
+        self.model.onFigureFinishMoveDownEvent = onFinishMoveDownEvent
+        self.model.onBurningLineEvent = onBurningLineEvent
+        level = 1
+        score.reset()
+        play()
+        
     }
     
     func play() {
@@ -59,9 +88,7 @@ class TetrisViewModel: ObservableObject {
     }
     
     func onEndGame() {
-        timer?.invalidate()
-        score.reset()
-        print("The End")
+        isStarted = false
     }
     
     func updateScreen() {
