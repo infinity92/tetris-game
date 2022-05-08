@@ -33,7 +33,7 @@ class TetrisViewModel: ObservableObject {
     @Published var model: GameModel
     
     init() {
-        self.model = GameModel(38, 20, TetrisViewModel.makeFigure, TetrisViewModel.makeGameField)
+        self.model = GameModel(20, 10, TetrisViewModel.makeFigure, TetrisViewModel.makeGameField)
         speed = 0.5
         play()
         self.model.onFinishGameEvent = onEndGame
@@ -135,5 +135,7 @@ enum TemplatesOfFigure: String, CaseIterable {
     case l = "....****........"
     case t = ".....***.*......"
     case s = ".....**.**......"
+    case rs = "....**...**....."
     case g = "....***.*......."
+    case rq = "....*...***....."
 }

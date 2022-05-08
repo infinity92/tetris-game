@@ -11,7 +11,8 @@ import SwiftUI
 struct TetrisGameApp: App {
     var body: some Scene {
         WindowGroup {
-            GameTetrisView(game: TetrisViewModel())
+            GameTetrisView()
+                .environmentObject(TetrisViewModel())
         }
     }
 }
