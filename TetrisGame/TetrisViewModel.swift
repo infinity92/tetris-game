@@ -31,10 +31,11 @@ class TetrisViewModel: ObservableObject {
     
     @Published var score: Score = Score()
     @Published var model: GameModel
+    @Published var level: Int = 1
     
     init() {
         self.model = GameModel(20, 10, TetrisViewModel.makeFigure, TetrisViewModel.makeGameField)
-        speed = 0.5
+        speed = 0.9
         play()
         self.model.onFinishGameEvent = onEndGame
         self.model.onFigureFinishMoveDownEvent = onFinishMoveDownEvent
@@ -72,62 +73,21 @@ class TetrisViewModel: ObservableObject {
             return
         }
         self.model.figure.rotate()
-        self.updateScreen()
-    }
-    
-    func getMoveGesture() -> some Gesture {
-        return DragGesture()
-        .onChanged(onMoveChanged(value:))
-        .onEnded(onMoveEnded(_:))
-    }
-    
-    func onMoveChanged(value: DragGesture.Value) {
-        if isPause {
-            return
-        }
-        guard let start = lastMoveLocation else {
-            lastMoveLocation = value.location
-            return
-        }
-        
-        let lenBlock:CGFloat = 19.22
-        
-        let xDiff = value.location.x - start.x
-        if xDiff >= 1 * lenBlock {
-            _ = model.figure.moveRight()
-            self.updateScreen()
-            return
-        }
-        if xDiff <= -1 * lenBlock {
-            _ = model.figure.moveLeft()
-            self.updateScreen()
-            return
-        }
-        
-        let yDiff = value.location.y - start.y
-        if yDiff > 1 * lenBlock {
-            _ = model.figure.moveDown()
-            self.updateScreen()
-            return
-        }
-        if yDiff < -3 {
-            model.figure.fastMoveDown()
-            self.updateScreen()
-            return
-        }
     }
     
     func onFinishMoveDownEvent(_ figure: Figure) {
-        score.add(points: 10)
+        //score.add(points: 10)
     }
     
     func onBurningLineEvent(_ number: Int) {
         score.add(points: 50)
+        if score.points >= 500 * level {
+            level += 1
+            speed *= 0.8
+            play()
+        }
     }
-    
-    func onMoveEnded(_:DragGesture.Value) {
-        lastMoveLocation = nil
-    }
+
 }
 
 enum TemplatesOfFigure: String, CaseIterable {

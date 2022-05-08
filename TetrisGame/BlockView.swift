@@ -12,13 +12,12 @@ struct BlockView: View {
     @State var y: CGFloat
     @State var length: CGFloat
     var body: some View {
-
-        let subLength: CGFloat = length/1.9
-        let subX: CGFloat = x+(length - subLength)/2
-        let subY: CGFloat = y+(length - subLength)/2
-        
+        let l = length - length/10/2
+        let subLength: CGFloat = l/1.9
+        let subX: CGFloat = x+(l - subLength)/2
+        let subY: CGFloat = y+(l - subLength)/2
         let path = Path { path in
-            let rect = CGRect(x: x, y: y, width: length, height: length)
+            let rect = CGRect(x: x, y: y, width: l, height: l)
             path.addRect(rect)
         }
         

@@ -18,12 +18,14 @@ struct ControlPanelView: View {
                 HStack{
                     Button {
                         _ = game.model.figure.moveLeft()
+                        game.updateScreen()
                     } label: {
                         getYellowBottom(sysImg: "arrowtriangle.left.fill")
                     }
                     Spacer(minLength: 20)
                     Button {
                         _ = game.model.figure.moveRight()
+                        game.updateScreen()
                     } label: {
                         getYellowBottom(sysImg: "arrowtriangle.right.fill")
                     }
@@ -32,6 +34,7 @@ struct ControlPanelView: View {
                 
                 Button {
                     _ = game.model.figure.moveDown()
+                    game.updateScreen()
                 } label: {
                     getYellowBottom(sysImg: "arrowtriangle.down.fill")
                    
@@ -41,12 +44,14 @@ struct ControlPanelView: View {
             Spacer()
             Button {
                 game.model.figure.rotate()
+                game.updateScreen()
             } label: {
                 getBlueBottom(sysImg: "arrow.counterclockwise")
             }
             .padding(.top, sizeButton)
             Button {
                 game.model.figure.fastMoveDown()
+                game.updateScreen()
             } label: {
                 getBlueBottom(sysImg: "arrow.down.to.line")
             }

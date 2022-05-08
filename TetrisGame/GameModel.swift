@@ -59,6 +59,7 @@ struct GameModel {
             }
         }
         field.burning()
+        figure.gameField = field
     }
     
     mutating func update() {

@@ -16,9 +16,9 @@ struct StatusBarView: View {
     var body: some View {
         VStack {
             
-            Text("Speed")
+            Text("Level")
                 .padding(.top, 10)
-            Text("\(game.speed)")
+            Text("\(game.level)")
             
             Text("Score")
                 .padding(.top, 10)
