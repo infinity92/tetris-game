@@ -69,8 +69,4 @@ struct GameModel {
     }
 }
 
-enum BlockState {
-    case empty, fill, shadow
-}
-
 
