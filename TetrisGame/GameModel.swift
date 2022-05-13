@@ -12,7 +12,7 @@ struct GameModel {
     
     let size: (columns:Int, rows: Int)
     var figure: Figure
-    //var nextFigure: Figure
+    var nextFigure: Figure
     var screen: BlockContainer
     var field: GameField
     var makeFigure: (GameField, (columns:Int, rows:Int)) -> Figure
@@ -35,7 +35,7 @@ struct GameModel {
         screen = Array(repeating: Array(repeating: .empty, count: size.columns), count: size.rows)
         field = fieldFactory(size)
         self.makeFigure = figureFactory
-        //nextFigure = self.makeFigure(field, size)
+        nextFigure = self.makeFigure(field, size)
         figure = self.makeFigure(field, size)
     }
     
@@ -49,8 +49,10 @@ struct GameModel {
             if let finishMoveDownEvent = onFigureFinishMoveDownEvent {
                 finishMoveDownEvent(figure)
             }
-            figure = self.makeFigure(field, size)
-            //nextFigure = self.makeFigure(field, size)
+//            figure = self.makeFigure(field, size)
+            figure = nextFigure
+            nextFigure = self.makeFigure(field, size)
+            
             if figure.checkCollision() != nil {
                 field.clear()
                 if let endGame = onFinishGameEvent {

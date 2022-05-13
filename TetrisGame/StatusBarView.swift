@@ -31,7 +31,7 @@ struct StatusBarView: View {
                     .fill(.gray)
                     .opacity(0.4)
                     .frame(width: 70, height: 70)
-                NextFigureBarView(figure: $game.model.figure)
+                NextFigureBarView(figure: $game.model.nextFigure)
                     .frame(width: 50, height: 50)
             }
             .padding(.top, 0)
