@@ -54,7 +54,7 @@ class TetrisViewModel: ObservableObject {
     }
     
     static func makeFigure(on gameField: GameField, and size: (columns:Int, rows:Int)) -> Figure {
-        return Figure(TemplatesOfFigure.allCases.randomElement()!, position: ( Int(size.columns/2), size.rows - 5), field: gameField)
+        return Figure(FigureTemplates.allCases.randomElement()!, position: ( Int(size.columns/2), size.rows - 5), field: gameField)
     }
     
     func newGame() {
@@ -115,14 +115,4 @@ class TetrisViewModel: ObservableObject {
         }
     }
 
-}
-
-enum TemplatesOfFigure: String, CaseIterable {
-    case q = ".....**..**....."
-    case l = "....****........"
-    case t = ".....***.*......"
-    case s = ".....**.**......"
-    case rs = "....**...**....."
-    case g = "....***.*......."
-    case rq = "....*...***....."
 }
